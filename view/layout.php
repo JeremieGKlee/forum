@@ -18,11 +18,12 @@
             <header>
                 <nav>
                 
-                    <a href="index.php">Accueil</a>
+                   
                     <?php
                     if(isset($_SESSION['id_userblog']))
                     {
                     ?>
+                    <a href="index.php?ctrl=home&action=affichetopics&id="<?= $_SESSION['id_userblog']; ?>>Accueil</a>
                     <a href="index.php?ctrl=home&action=search">Recherche</a>
                     <a href="index.php">New Topic</a>
                     <a href="index.php?ctrl=secure&action=admin">Admin</a>
@@ -35,6 +36,7 @@
                     else
                     {
                     ?>
+                    <a href="index.php">Accueil</a>
                     <a href="index.php?ctrl=secure&action=signin">Connexion</a>
                     <?php
                     }

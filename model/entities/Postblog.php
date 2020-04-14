@@ -10,6 +10,7 @@
         private $postDate;
         private $user;
         private $topic;
+        private $datemodif;
 
 
         public function __construct($data){         
@@ -107,6 +108,26 @@
         public function setTopic($topic)
         {
                 $this->topic = $topic;
+
+                return $this;
+        }
+
+         /**
+         * Get the value of postDate
+         */ 
+        public function getDateModif()
+        {
+                return $this->datemodif;
+        }
+
+        /**
+         * Set the value of postDate
+         *
+         * @return  self
+         */ 
+        public function setDateModif($datemodif)
+        {
+                $this->datemodif = $datemodif;
 
                 return $this;
         }

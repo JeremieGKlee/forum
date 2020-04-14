@@ -1,32 +1,35 @@
 
 <?php
-$data=$result['data'];
-foreach($data as $data)
-{
+$topics = $result["data"]["topic"];
 ?>   
 
 
-<h1>Bonjour</h1>
-<p>Derniers billets du blog :</p>
- 
-
+<h1>Bonjour <?= $_SESSION['pseudo'] ?></h1>
+<h3>Derniers Topics du Forum :</h3>
 <?php
-// while ($data = $posts->fetch()){
-?>
+
+    if(!empty($topics))
+    {
+        foreach($topics as $topic){
+
+?> 
+
     <div class="news">
         <h3>
-            <?= htmlspecialchars($data['title']) ?>
-            <em>le <?= $data['creation_date_fr'] ?></em>
+            <?= htmlspecialchars($topic->getTitle()) ?>
+            <em>le <?= $topic->getTopicDate() ?></em>
         </h3>
         
         <p>
-            <?= nl2br(htmlspecialchars($data['content'])) ?>
+            <?= nl2br(htmlspecialchars($topic->getContent())) ?>
             <br />
-            <em><a href="index.php?action=post&amp;id=<?= $data['id'] ?>">Commentaires</a></em>
+            <em><a href="index.php?ctrl=home&amp;action=affichePostsTopic&amp;id=<?= $topic->getId() ?>">Posts</a></em>
         </p>
     </div>
 <?php
-}
+        }
+    }
+    else echo "<p>Pas de véhicules disponibles...</p>";
 ?>
 <form action="index.php?action=addTopic" method="post">
     <div>

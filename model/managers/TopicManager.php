@@ -14,11 +14,11 @@
             parent::connect();
         }
 
-        /*public function findAll(){
-            return parent::findAll();
-        }
+        // public function findAll(){
+        //     return parent::findAll();
+        // }
 
-        public function findOneById($id){
-            return parent::findOneById($id);
-        }*/
+        // public function findOneById($id){
+        //     return parent::findOneById($id);
+        // }
     }

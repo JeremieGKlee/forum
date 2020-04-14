@@ -111,9 +111,9 @@
                 return $this;
         }
 
-        // public function __toString(){
+        public function __toString(){
 
-        //     return $this->nom;
-        // }
+            return $this->title." ".$this->content." ".$this->topicDate;
+        }
 
     }

@@ -10,43 +10,51 @@
 
         public function index(){
 
-            $pbman = new PostblogManager();
-            $tman = new TopicManager();
-            $ubman = new UserblogManager();
-
-            $postblogs = $pbman->findAll();
-            $topics = $tman->findAll();
-            $userblogs = $ubman->findAll();
-
-
             return [
                 "view" => VIEW_DIR."firstView.php",
-                "data" => [
-                    "topics" => $topics,
-                    "marques" => $marques
-                ]
+                
             ];
         }
 
-        public function afficheblog(){
+        public function affichetopics(){
 
-            $pbman = new PostblogManager();
             $tman = new TopicManager();
-            $ubman = new UserblogManager();
-
-            $postblogs = $pbman->findAll();
+           
             $topics = $tman->findAll();
-            $userblogs = $ubman->findAll();
 
 
             return [
-                "view" => VIEW_DIR."userListPostsView.php",
+                "view" => VIEW_DIR."userListTopicsView.php",
                 "data" => [
-                    "topics" => $topics,
-                    "marques" => $marques
+                    "topic" => $topics,
+                    
                 ]
             ];
         }
+
+        public function affichePostsTopic(){
+
+            $id = $_GET['id'];
+            $tman = new TopicManager();
+            $pbman = new PostblogManager();
+           
+            $topic = $tman->findOneById($id);
+            $postblogs = $pbman->findAll();
+            foreach($postblogs as $value){
+                var_dump($value);die;
+            }
+{
+
+            return [
+                "view" => VIEW_DIR."userPostsView.php",
+                "data" => [
+                    "topic" => $topic,
+                    "postblog" => $postblogs,
+                    
+                ]
+            ];
+        }
+    }
 
         public function voir($id){
             

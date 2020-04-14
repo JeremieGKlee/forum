@@ -114,6 +114,7 @@
 
         public function signin()
         {   
+            
             if(isset($_POST['formconnexion']))
             {
                 $pseudo =htmlspecialchars($_POST['pseudo']);
@@ -146,7 +147,7 @@
                             $_SESSION['id_userblog'] = $userinfo['id_userblog'];
                             $_SESSION['pseudo'] = $userinfo['pseudo'];
                             $_SESSION['email'] = $userinfo['email'];
-                            header('location:index.php?ctrl=home&action=afficheblog&id='.$_SESSION['id_userblog']);
+                            header('location:index.php?ctrl=home&action=affichetopics&id='.$_SESSION['id_userblog']);
 
                             }
                             else
@@ -177,19 +178,6 @@
                     "view" => VIEW_DIR."profilView.php",
                     "data" => $profil
                 ];
-    
-            
-                // if(isset($_SESSION['id_userblog']) AND ($_GET['id'] == ""))
-                // {
-                //<?php
-                // <a href="modifProfilView.php">Modifiez mon profil</a>
-                //? >
-                // }
-                // else
-                // {
-                // header("location:prohibitedView.php");
-                // } -->
-            
         }
 
         public function modifyprofil()
@@ -214,7 +202,7 @@
                     $newpseudo = htmlspecialchars($_POST['newpseudo']);
                     $insertpseudo = $db->prepare("UPDATE userblog SET pseudo = ? WHERE id_userblog = ? " );
                     $insertpseudo->execute(array($newpseudo, $_SESSION['id_userblog']));
-                    header('location:index.php?ctrl=secure&action=displayprofil&id='.$_SESSION['id_userblog']);
+                    header('location:index.php?ctrl=secure&action=displayprofil&id=');
                     
                 }
 
@@ -223,7 +211,7 @@
                     $newmail = htmlspecialchars($_POST['newmail']);
                     $insertmail = $db->prepare("UPDATE userblog SET email = ? WHERE id_userblog = ? " );
                     $insertmail->execute(array($newmail, $_SESSION['id_userblog']));
-                    header('location:index.php?ctrl=secure&action=displayprofil&id='.$_SESSION['id_userblog']);
+                    header('location:index.php?ctrl=secure&action=displayprofil&id=');
                 }
 
                 if (isset($_POST['newmdp1']) AND !empty($_POST['newmdp1']) AND isset($_POST['newmdp2']) AND !empty($_POST['newmdp2']))
@@ -236,7 +224,7 @@
                     {
                         $insertmdp = $db->prepare("UPDATE userblog SET mdp = ? WHERE id_userblog = ? " );
                         $insertmdp->execute(array($newmdp1, $_SESSION['id_userblog']));
-                        header('location:index.php?ctrl=secure&action=displayprofil&id='.$_SESSION['id_userblog']);
+                        header('location:index.php?ctrl=secure&action=displayprofil&id=');
                     }
                     else
                     {
@@ -244,7 +232,7 @@
                     }
         
                 }
-
+                // var_dump($_SESSION);die;
                 return
                 [
                     "view" => VIEW_DIR."modifProfilView.php",

@@ -13,6 +13,7 @@ $profil = $result["data"];
             
                 <label for="newpseudo">Votre Pseudo :</label>
                 <input id="newpseudo" type="text" name="newpseudo" placeholder="Votre nouveau Pseudo" value="<?= $profil->getPseudo() ?>"/><br><br>
+                <!-- Ou utiliser $_SESSION pour remplir les champs -->
                 <label for="newmail">Votre nouveau mail :</label>
                 <input id="newmail" type="mail" name="newmail" placeholder="Votre nouveau mail" value="<?= $profil->getEmail() ?>"/><br><br>
                 <label for="newmail2">Confirmation de votre nouveau mail :</label>
