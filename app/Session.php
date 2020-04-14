@@ -22,4 +22,22 @@
             
             return $msg;
         }
+
+        /**
+        *   met un user dans la session (pour le maintenir connecté)
+        */
+        public static function setUser($user){
+            $_SESSION["user"] = $user;
+        }
+
+        public static function getUser(){
+            return (isset($_SESSION['user'])) ?$_SESSION['user'] : false;
+        }
+
+        public static function authenticationRequired(){
+            if(!self::getUser()){
+                header("Location:index.php?ctrl=security&action=login");
+                die();
+            }
+        }
     }

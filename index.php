@@ -1,13 +1,13 @@
 <?php
     namespace App;
 
-    
-
     define('DS', DIRECTORY_SEPARATOR); // le caractère séparateur de dossier (/ ou \)
     // meilleure portabilité sur les différents systêmes.
     define('BASE_DIR', dirname(__FILE__).DS); // pour se simplifier la vie
     define('VIEW_DIR', BASE_DIR."view/");     //le chemin où se trouvent les vues
     define('PUBLIC_DIR', BASE_DIR."public/");     //le chemin où se trouvent les fichiers publics (CSS, JS, IMG)
+
+    define('DEFAULT_CTRL', 'home');//nom du contrôleur par défaut
 
     require("app/Autoloader.php");
 
@@ -19,46 +19,51 @@
     use App\Session as Session;
 
 //---------REQUETE HTTP INTERCEPTEE-----------
-
+    $ctrlname = DEFAULT_CTRL;//on prend le controller par défaut
     //ex : index.php?ctrl=home
     if(isset($_GET['ctrl'])){
         $ctrlname = $_GET['ctrl'];
     }
-    else $ctrlname = "home";
+    //on construit le namespace de la classe Controller à appeller
+    $ctrlNS = "Controller\\".ucfirst($ctrlname)."Controller";
+    //on vérifie que le namespace pointe vers une classe qui existe
+    if(!class_exists($ctrlNS)){
+        //si c'est pas le cas, on choisit le namespace du controller par défaut
+        $ctrlNS = "Controller\\".DEFAULT_CTRL."Controller";
+    }
+    $ctrl = new $ctrlNS();
 
-    //Controller/HomeController
-    $ctrlname = "Controller".DS.ucfirst($ctrlname)."Controller";
-
-    $ctrl = new $ctrlname();
-    
-    if(isset($_GET['action'])){
+    $action = "index";//action par défaut de n'importe quel contrôleur
+    //si l'action est présente dans l'url ET que la méthode correspondante existe dans le ctrl
+    if(isset($_GET['action']) && method_exists($ctrl, $_GET['action'])){
+        //la méthode à appeller sera celle de l'url
         $action = $_GET['action'];
     }
-    else $action = "index";
-
     if(isset($_GET['id'])){
         $id = $_GET['id'];
     }
     else $id = null;
-
+    //ex : HomeController->users(null)
     $result = $ctrl->$action($id);
     
-    /*--------CHARGEMENT PAGE----------*/
+    /*--------CHARGEMENT PAGE--------*/
     
     if($action == "ajax"){//si l'action était ajax
         echo $result;//on affiche directement le return du contrôleur (càd la réponse HTTP sera uniquement celle-ci)
     }
     else{
         ob_start();//démarre un buffer (tampon de sortie)
-        /*la vue s'affiche dans le buffer qui devra être inséré
-        au milieu du template*/
+        /*la vue s'insère dans le buffer qui devra être vidé au milieu du layout*/
         include($result['view']);
         /*je mets cet affichage dans une variable*/
         $page = ob_get_contents();
         /*j'efface le tampon*/
         ob_end_clean();
-        /*j'affiche le template principal*/
+        /*j'affiche le template principal (layout)*/
         include VIEW_DIR."layout.php";
     }
+    
+
+
     
 

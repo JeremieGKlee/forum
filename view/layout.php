@@ -14,28 +14,44 @@
 <body>
     <div id="wrapper"> 
         <div id="mainpage">
-            <!-- c'est ici que les messages (erreur ou succès) s'affichent-->
-            <h3 id="message" style="color: red">
-                //?= App\Session::getFlash("error") ?>
-            </h3>
-            <h3 id="message" style="color: green">
-                //?= App\Session::getFlash("success") ?>
-            </h3>
+           
             <header>
                 <nav>
                 
                     <a href="index.php">Accueil</a>
+                    <?php
+                    if(isset($_SESSION['id_userblog']))
+                    {
+                    ?>
                     <a href="index.php?ctrl=home&action=search">Recherche</a>
                     <a href="index.php">New Topic</a>
-                    <a href="index.php?ctrl=home&action=new">Admin</a>
+                    <a href="index.php?ctrl=secure&action=admin">Admin</a>
                     <a href="index.php">New Post</a>
-                    <a href="index.php?ctrl=home&action=new">Avatar</a>
-                    <a href="index.php">Pseudo</a>
-                    <a href="index.php?ctrl=home&action=new">Deconnexion</a>
+                    <a href="">Avatar</a>
+                    <a href="index.php?ctrl=secure&action=displayprofil&id="<?= $_SESSION['id_userblog']; ?>>Pseudo</a>
+                    <a href="index.php?ctrl=secure&action=logout">Deconnexion</a>
+                    <?php
+                    }
+                    else
+                    {
+                    ?>
+                    <a href="index.php?ctrl=secure&action=signin">Connexion</a>
+                    <?php
+                    }
+                    ?>
+                    
+                    
+                    
                 
                 </nav>
             </header>
-            
+             <!-- c'est ici que les messages (erreur ou succès) s'affichent-->
+             <h3 id="message" style="color: red">
+                <?= App\Session::getFlash("error") ?>
+            </h3>
+            <h3 id="message" style="color: green">
+                <?= App\Session::getFlash("success") ?>
+            </h3>
             <main id="forum">
                 <?= $page ?>
             </main>

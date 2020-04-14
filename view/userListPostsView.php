@@ -1,25 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="./public/css/style.css">
-    <title>FORUM</title>
-    <script
-    src="https://code.jquery.com/jquery-3.4.1.min.js"
-    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-    crossorigin="anonymous"></script>
-</head>
-
-<?php ob_start(); ?>
-<h1>Mon super blog !</h1>
-<p>Derniers billets du blog :</p>
-
 
 <?php
-while ($data = $posts->fetch())
+$data=$result['data'];
+foreach($data as $data)
 {
+?>   
+
+
+<h1>Bonjour</h1>
+<p>Derniers billets du blog :</p>
+ 
+
+<?php
+// while ($data = $posts->fetch()){
 ?>
     <div class="news">
         <h3>
@@ -50,6 +42,5 @@ while ($data = $posts->fetch())
     </div>
 </form>
 <?php
-$posts->closeCursor();
+// $posts->closeCursor();
 ?>
-<?php $content = ob_get_clean(); ?>

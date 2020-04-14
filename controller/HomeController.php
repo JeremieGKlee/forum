@@ -16,11 +16,31 @@
 
             $postblogs = $pbman->findAll();
             $topics = $tman->findAll();
-            $userblos = $ubman->findAll();
+            $userblogs = $ubman->findAll();
 
 
             return [
                 "view" => VIEW_DIR."firstView.php",
+                "data" => [
+                    "topics" => $topics,
+                    "marques" => $marques
+                ]
+            ];
+        }
+
+        public function afficheblog(){
+
+            $pbman = new PostblogManager();
+            $tman = new TopicManager();
+            $ubman = new UserblogManager();
+
+            $postblogs = $pbman->findAll();
+            $topics = $tman->findAll();
+            $userblogs = $ubman->findAll();
+
+
+            return [
+                "view" => VIEW_DIR."userListPostsView.php",
                 "data" => [
                     "topics" => $topics,
                     "marques" => $marques
