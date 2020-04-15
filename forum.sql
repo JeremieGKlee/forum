@@ -36,10 +36,10 @@ CREATE TABLE IF NOT EXISTS `postblog` (
 INSERT INTO `postblog` (`id_post`, `post`, `postdate`, `userblog_id`, `topic_id`, `datemodif`) VALUES
 	(1, 'Non papa on en a trop besoin', '2020-03-25 16:07:46', 2, 1, '2020-04-14 19:08:44'),
 	(2, 'Oui vas-y tu pourras les jouer au poker...', '2020-03-25 16:07:45', 3, 1, '2020-04-14 19:08:54'),
-	(3, 'On y va Ninjadada, faut que papa paye de toute nos privations...', '2020-03-25 16:07:29', 2, 2, '2020-04-14 19:08:56'),
+	(3, 'On y va Ninjadada, faut que papa paye de toute nos privations...', '2020-03-25 16:07:29', 2, 3, '2020-04-15 01:41:53'),
 	(4, 'T\'as raison mais on est en confinement on fait comment?', '2020-03-25 16:08:02', 3, 2, '2020-04-14 19:08:56'),
 	(5, 'Lulu un mois de plus...', '2020-03-25 16:10:20', 1, 2, '2020-04-14 19:08:57'),
-	(6, 'Ninja 30 jour de plus', '2020-03-25 16:12:04', 1, 3, '2020-04-14 19:08:58');
+	(6, 'Ninja 30 jour de plus', '2020-03-25 16:12:04', 1, 3, '2020-04-15 01:45:37');
 /*!40000 ALTER TABLE `postblog` ENABLE KEYS */;
 
 -- Listage de la structure de la table forum. topic

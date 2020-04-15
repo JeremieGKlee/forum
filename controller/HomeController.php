@@ -32,20 +32,19 @@
             ];
         }
 
-        public function affichePostsTopic(){
+        public function affichePostsTopic()
+        {
 
-            $id = $_GET['id'];
+            $idtopic = $_GET['id'];
             $tman = new TopicManager();
             $pbman = new PostblogManager();
            
-            $topic = $tman->findOneById($id);
-            $postblogs = $pbman->findAll();
-            foreach($postblogs as $value){
-                var_dump($value);die;
-            }
-{
-
-            return [
+            $topic = $tman->findOneById($idtopic);
+            var_dump($topic);
+            $postblogs = $pbman->findByTopic($idtopic);
+            var_dump($postblogs);
+            return 
+            [
                 "view" => VIEW_DIR."userPostsView.php",
                 "data" => [
                     "topic" => $topic,
@@ -54,7 +53,6 @@
                 ]
             ];
         }
-    }
 
         public function voir($id){
             

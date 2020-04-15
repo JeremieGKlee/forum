@@ -1,5 +1,5 @@
 <?php
-$topic = $result["data"];
+$topic = $result["data"]["topic"];
 $postblogs = $result["data"]["postblog"];
 ?>   
 <h1>Posts du Topic!</h1>
@@ -8,12 +8,12 @@ $postblogs = $result["data"]["postblog"];
 
 <div class="news">
     <h3>
-        <?= htmlspecialchars($topic['title']) ?>
-        <em>le <?= $post['creation_date_fr'] ?></em>
+        <?= htmlspecialchars($topic->getTitle()) ?> crée par <?= $topic->getUser()?>
+        <em> le <?= $topic->getTopicDate() ?></em>
     </h3>
     
     <p>
-        <?= nl2br(htmlspecialchars($post['content'])) ?>
+        <?= nl2br(htmlspecialchars($topic->getContent())) ?>
     </p>
 </div>
 
@@ -40,9 +40,7 @@ if(!empty($postblogs))
     foreach($postblogs as $postblog)
 {
 ?>
-<p><strong><?
-var_dump($postblog);die;
-?>
+<p><strong><?= htmlspecialchars($postblog->getUser()) ?>
 </strong> créé le <?= $postblog->getPostDate() ?><a href="index.php?action=modifOneComment&amp;id=<?= $comment['id']?>&amp;postid=<?= $post['id'] ?>"> (modifier) </a> </p>
 <P>(dernière modification le <?= $postblog->getDateModif() ?>)</P> 
 <p><?= nl2br(htmlspecialchars($postblog->getPost())) ?></p>

@@ -32,7 +32,7 @@
         }
 
         /**
-         * Get the value of nom
+         * Get the value of title
          */ 
         public function getTitle()
         {
@@ -40,7 +40,7 @@
         }
 
         /**
-         * Set the value of nom
+         * Set the value of title
          *
          * @return  self
          */ 
@@ -52,7 +52,7 @@
         }
         
         /**
-         * Get the value of origine
+         * Get the value of content
          */ 
         public function getContent()
         {
@@ -60,7 +60,7 @@
         }
 
         /**
-         * Set the value of origine
+         * Set the value of content
          *
          * @return  self
          */ 
@@ -72,7 +72,7 @@
         }
 
         /**
-         * Get the value of origine
+         * Get the value of topicdate
          */ 
         public function getTopicDate()
         {
@@ -80,7 +80,7 @@
         }
 
         /**
-         * Set the value of origine
+         * Set the value of topicdate
          *
          * @return  self
          */ 
@@ -92,7 +92,7 @@
         }
 
         /**
-         * Get the value of origine
+         * Get the value of user
          */ 
         public function getUser()
         {
@@ -100,7 +100,7 @@
         }
 
         /**
-         * Set the value of origine
+         * Set the value of user
          *
          * @return  self
          */ 

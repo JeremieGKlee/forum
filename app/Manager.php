@@ -35,13 +35,26 @@
 
         public function add($data){
             $keys = array_keys($data);
+            // var_dump($keys);die;
             $values = array_values($data);
+            var_dump($values);;die;
             $sql = "INSERT INTO ".$this->tableName."
                     (".implode(',', $keys).")
                     VALUES
                     ('".implode("','",$values)."')";
 
             return DAO::insert($sql);
+        }
+
+        public function change($data){
+            $keys = array_keys($data);
+            $values = array_values($data);
+            $sql = "UPDATE ".$this->tableName."
+                    (".implode(',', $keys).")
+                    SET
+                    ('".implode("','",$values)."')";
+
+            return DAO::update($sql);
         }
         
         protected function getMultipleResults($rows, $class){
