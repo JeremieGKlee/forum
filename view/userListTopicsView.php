@@ -3,8 +3,8 @@
 $topics = $result["data"]["topic"];
 ?>   
 
-
-<h1>Bonjour <?= $_SESSION['pseudo'] ?></h1>
+<h1>Bienvenue sur mon petit Forum Muselé</h1>
+<h2>Bonjour <?= $_SESSION['pseudo'] ?></h2>
 <h3>Derniers Topics du Forum :</h3>
 <?php
 
@@ -17,6 +17,8 @@ $topics = $result["data"]["topic"];
     <div class="news">
         <h3>
             <?= htmlspecialchars($topic->getTitle()) ?>
+            </br>
+             Crée par <?= $topic->getUserBlog()->getPseudo() ?>
             <em>le <?= $topic->getTopicDate() ?></em>
         </h3>
         
@@ -31,7 +33,8 @@ $topics = $result["data"]["topic"];
     }
     else echo "<p>Pas de véhicules disponibles...</p>";
 ?>
-<form action="index.php?action=addTopic" method="post">
+<form action="index.php?ctrl=home&action=ajouteTopic&id=" method="post">
+<!-- <a href="index.php?ctrl=home&action=affichetopics&id="<?= $_SESSION['id_userblog']; ?>>Accueil</a> -->
     <div>
         <label for="title">Titre du billet</label><br />
         <input type="text" id="title" name="title" />
@@ -42,6 +45,7 @@ $topics = $result["data"]["topic"];
     </div>
     <div>
         <input type="submit" />
+        
     </div>
 </form>
 <?php

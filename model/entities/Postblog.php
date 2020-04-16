@@ -8,7 +8,7 @@
         private $id;
         private $post;
         private $postDate;
-        private $user;
+        private $userblog;
         private $topic;
         private $datemodif;
 
@@ -75,9 +75,9 @@
         /**
          * Get the value of postDate
          */ 
-        public function getUser()
+        public function getUserBlog()
         {
-                return $this->user;
+                return $this->userblog;
         }
 
         /**
@@ -85,9 +85,9 @@
          *
          * @return  self
          */ 
-        public function setUser($user)
+        public function setUserBlog($userblog)
         {
-                $this->user = $user;
+                $this->userblog = $userblog;
 
                 return $this;
         }

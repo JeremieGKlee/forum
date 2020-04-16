@@ -9,7 +9,7 @@
         private $title;
         private $content;
         private $topicDate;
-        private $user;
+        private $userblog;
 
 
         public function __construct($data){         
@@ -94,9 +94,9 @@
         /**
          * Get the value of user
          */ 
-        public function getUser()
+        public function getUserBlog()
         {
-                return $this->user;
+                return $this->userblog;
         }
 
         /**
@@ -104,9 +104,9 @@
          *
          * @return  self
          */ 
-        public function setUser($user)
+        public function setUserBlog($userblog)
         {
-                $this->user = $user;
+                $this->userblog = $userblog;
 
                 return $this;
         }

@@ -16,7 +16,8 @@
             ];
         }
 
-        public function affichetopics(){
+        public function affichetopics()
+        {
 
             $tman = new TopicManager();
            
@@ -32,17 +33,45 @@
             ];
         }
 
+        
+        public function ajouteTopic()
+        {
+        $tman = new TopicManager();
+        $userblog = $_SESSION['id_userblog'];
+        $title = htmlspecialchars($_POST['title'],ENT_QUOTES);
+        $content =  htmlspecialchars($_POST['content']);
+
+        $newtopic =
+            [
+                "title" => $title,
+                "content" => $content,
+                "userblog_id" => $userblog,
+            ]
+            ;
+            $tman->add($newtopic);
+    
+            if ($tman === false)
+            {
+                Session::addFlash("error", "Impossible d'ajouter le topic !");
+            }
+            else
+            {
+                header('location:index.php?ctrl=home&action=affichetopics&id=');
+            }
+            return ["view" => VIEW_DIR."userListTopicsView.php"];
+        }
+
         public function affichePostsTopic()
         {
-
+            
             $idtopic = $_GET['id'];
             $tman = new TopicManager();
             $pbman = new PostblogManager();
            
             $topic = $tman->findOneById($idtopic);
-            var_dump($topic);
+            // var_dump($topic);
             $postblogs = $pbman->findByTopic($idtopic);
-            var_dump($postblogs);
+            // var_dump($postblogs);
             return 
             [
                 "view" => VIEW_DIR."userPostsView.php",
@@ -52,6 +81,48 @@
                     
                 ]
             ];
+        }
+
+        public function ajoutePost()
+        {
+        $pbman = new PostblogManager();
+        $userblog = $_SESSION['id_userblog'];
+        $topic = $_GET['id'];
+        $comment =  htmlspecialchars($_POST['comment']);
+
+        $newPost =
+            [
+                "post" => $comment,
+                "userblog_id" => $userblog,
+                "topic_id" => $topic,
+            ]
+            ;
+            // var_dump($newPost);die;
+            $pbman->add($newPost);
+    
+            if ($pbman === false)
+            {
+                Session::addFlash("error", "Impossible d'ajouter le post !");
+            }
+            else
+            {
+                header('location:index.php?ctrl=home&action=affichePostsTopic&id='.$_GET['id']);
+            }
+            return ["view" => VIEW_DIR."userPostsView.php"];
+        }
+
+        public function displayOneComment() //pour afficher le commentaire selectionné pour affichage avant modif
+        {
+            $id = $_GET['id'];
+            $pbman = new PostblogManager();
+            $post = $pbman->findOneById($id);
+    
+            return
+                [
+                    "view" => VIEW_DIR."modifCommentView.php",
+                    "data" => $post
+                ];
+    
         }
 
         public function voir($id){

@@ -173,7 +173,7 @@
             $manager = new UserblogManager();
     
             $profil = $manager->findOneById($id);
-            var_dump($profil);
+            // var_dump($profil);
             return
                 [
                     "view" => VIEW_DIR."profilView.php",

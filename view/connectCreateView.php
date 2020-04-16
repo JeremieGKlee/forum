@@ -1,8 +1,8 @@
 <?php
 
 ?>
-<h3>Page pour se connecter ou créer un nouveau compte</h3>
-<h3>Connexion</h3>
+<h1>Bienvenue sur mon petit Forum Muselé</h1>
+<h3>Merci de vous connecter ou créer un nouveau compte</h3>
 
 
 

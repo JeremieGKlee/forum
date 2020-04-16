@@ -1,13 +1,17 @@
-<?php $title = 'Modification de commentaire'; ?>
+<?php
+$post = $result["data"];
+// var_dump($post);die;
+?>
  
-<?php ob_start(); ?>
-<h1>Mon super blog !</h1>
-<p><a href="index.php">Retour à la liste des billets</a></p>
+<?php
+?>
+<h1>Mon petit Forum Muselé</h1>
+<p><a href="index.php?ctrl=home&action=affichePostsTopic&id=<?=$post->getTopic()->getId()?>">Retour à la liste des posts</a></p>
 <p><strong>Commentaire à modifier</strong></p>
  
-<p><strong><?= htmlspecialchars($oneComment['author']) ?>
-</strong> le <?= $oneComment['comment_date_fr'] ?></p>
-    <p><?= nl2br(htmlspecialchars($oneComment['comment'])) ?></p>
+<p><strong>Créé par <?= htmlspecialchars($post->getUserblog()->getPseudo()) ?>
+</strong> le <?= $post->getpostDate() ?></p>
+    <p><?= nl2br(htmlspecialchars($post->getPost()))?></p>
 
 <h2>Modification du commentaire</h2>
 <!-- modif 2 apportée mercredi soir 22 05 19 : post_id au lieu d'id pour le lien ci-dessous : -->
@@ -20,23 +24,15 @@
     </div> -->
  
     <div>
-        <label for="author">Auteur</label><br />
-        <input type="text" id="author" name="author" />
-        <input type="hidden" name="sujetId" value="<?= $_GET['postid'] ?>"/>
+        
     </div>
  
     <div>
-        <label for="comment">Commentaire</label><br />
-        <textarea id="comment" name="comment"><?=$oneComment['comment']?></textarea>
+        <label for="post">Post à modifier</label><br />
+        <textarea id="post" name="post"><?=$post->getPost()?></textarea>
     </div>
  
     <div>
         <input type="submit"/>
     </div>
 </form>
- 
- 
- 
-<?php $content = ob_get_clean(); ?>
- 
-<?php require(FRONTEND_DIR.'template.php'); ?>

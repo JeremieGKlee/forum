@@ -1,7 +1,6 @@
 
 
-<h3>Page pour créer un nouveau compte</h3>
-<h3>Inscription</h3>
+<h1>Un petit effort pour arriver sur mon petit Forum Muselé</h1>
 
 
 <div>

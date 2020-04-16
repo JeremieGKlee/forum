@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="./public/css/style.css">
-    <title>FORUM</title>
+    <title>Mon petit Forum Muselé</title>
     <script
     src="https://code.jquery.com/jquery-3.4.1.min.js"
     integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
@@ -24,10 +24,10 @@
                     {
                     ?>
                     <a href="index.php?ctrl=home&action=affichetopics&id="<?= $_SESSION['id_userblog']; ?>>Accueil</a>
-                    <a href="index.php?ctrl=home&action=search">Recherche</a>
-                    <a href="index.php">New Topic</a>
+                    <!-- <a href="index.php?ctrl=home&action=search">Recherche</a> -->
+                    <!-- <a href="index.php">New Topic</a> -->
                     <a href="index.php?ctrl=secure&action=admin">Admin</a>
-                    <a href="index.php">New Post</a>
+                    <!-- <a href="index.php">New Post</a> -->
                     <a href="">Avatar</a>
                     <a href="index.php?ctrl=secure&action=displayprofil&id="<?= $_SESSION['id_userblog']; ?>>Pseudo</a>
                     <a href="index.php?ctrl=secure&action=logout">Deconnexion</a>

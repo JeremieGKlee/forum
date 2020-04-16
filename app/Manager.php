@@ -37,7 +37,7 @@
             $keys = array_keys($data);
             // var_dump($keys);die;
             $values = array_values($data);
-            var_dump($values);;die;
+            // var_dump($values);;die;
             $sql = "INSERT INTO ".$this->tableName."
                     (".implode(',', $keys).")
                     VALUES

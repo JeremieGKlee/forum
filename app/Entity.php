@@ -6,6 +6,7 @@
         protected function hydrate($data){
 
             foreach($data as $field => $value){
+                // var_dump($value);
 
                 //field = marque_id
                 //fieldarray = ['marque','id']

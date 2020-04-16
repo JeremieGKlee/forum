@@ -50,6 +50,19 @@
             }
         }
 
+        public static function update($sql){
+            try{
+                $stmt = self::$bdd->prepare($sql);
+                $result = $stmt->execute();
+                
+                return ($result == false) ? null : $result;
+                
+            }
+            catch(\Exception $e){
+                echo $e->getMessage();
+            }
+        }
+
         /**
          * Cette méthode permet les requêtes de type SELECT
          * 
