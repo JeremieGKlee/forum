@@ -21,8 +21,10 @@
             $sql = "SELECT COUNT(p.id_userblog)
                     FROM ".$this->tableName." p
                     WHERE p.pseudo = :pseudo";
-            
-            return DAO::select($sql, ['pseudo'=> $pseudo]);
+
+            return $this->getSingleScalarResult(
+                DAO::select($sql, ['pseudo'=> $pseudo],false)
+            );
         }
 
         public function mailAlreadyUsed($email)
@@ -30,8 +32,10 @@
             $sql = "SELECT COUNT(e.id_userblog)
                     FROM ".$this->tableName." e
                     WHERE e.email = :email";
-            
-            return DAO::select($sql, ['email'=> $email]);
+
+            return $this->getSingleScalarResult(
+                DAO::select($sql, ['email'=> $email], false)
+            );
         }
 
         public function findByPseudo($pseudo){
@@ -53,7 +57,9 @@
                     WHERE p.pseudo = :pseudo
                     ";
 
-            return DAO::select($sql, ['pseudo' => $pseudo]);
+            return $this->getSingleScalarResult(
+                DAO::select($sql, ['pseudo' => $pseudo], false)
+            );
         }
 
         public function sessionopen($pseudo)
@@ -62,7 +68,7 @@
                     FROM ".$this->tableName." p
                     WHERE p.pseudo = :pseudo
                     ";
-            return DAO::select($sql, ['pseudo' => $pseudo]);
+            return DAO::select($sql, ['pseudo' => $pseudo],false);
         }
 
 

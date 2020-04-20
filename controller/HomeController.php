@@ -2,11 +2,13 @@
     namespace Controller;
 
     use App\Session;
+    use App\AbstractController;
     use Model\Managers\PostblogManager;
     use Model\Managers\TopicManager;
     use Model\Managers\UserblogManager;
     
-    class HomeController{
+    class HomeController extends AbstractController
+    {
 
         public function index(){
 
@@ -38,8 +40,10 @@
         {
         $tman = new TopicManager();
         $userblog = $_SESSION['id_userblog'];
-        $title = htmlspecialchars($_POST['title'],ENT_QUOTES);
-        $content =  htmlspecialchars($_POST['content']);
+        $title = filter_input(INPUT_POST,'title',FILTER_SANITIZE_STRING);
+        // $content =  htmlspecialchars($_POST['content']);
+        // $content = filter_var($_POST['content'],FILTER_SANITIZE_STRING);
+        $content = filter_input(INPUT_POST,'content',FILTER_SANITIZE_STRING);
 
         $newtopic =
             [
@@ -56,7 +60,8 @@
             }
             else
             {
-                header('location:index.php?ctrl=home&action=affichetopics&id=');
+                // header('location:index.php?ctrl=home&action=affichetopics&id=');
+                $this->redirectTo("home", "affichetopics");
             }
             return ["view" => VIEW_DIR."userListTopicsView.php"];
         }
@@ -88,8 +93,7 @@
         $pbman = new PostblogManager();
         $userblog = $_SESSION['id_userblog'];
         $topic = $_GET['id'];
-        $comment =  htmlspecialchars($_POST['comment']);
-
+        $comment = filter_input(INPUT_POST,'comment',FILTER_SANITIZE_STRING);
         $newPost =
             [
                 "post" => $comment,
@@ -106,7 +110,8 @@
             }
             else
             {
-                header('location:index.php?ctrl=home&action=affichePostsTopic&id='.$_GET['id']);
+                // header('location:index.php?ctrl=home&action=affichePostsTopic&id='.$_GET['id']);
+                $this->redirectTo("home", "affichePostsTopic",$_GET['id']);
             }
             return ["view" => VIEW_DIR."userPostsView.php"];
         }
@@ -123,6 +128,20 @@
                     "data" => $post
                 ];
     
+        }
+
+        function changeComment($id, $author, $comment) // pour modifier un commentaire
+        {
+            $commentManager =new \OpenClassrooms\Blog\Model\CommentManager(); //Création d'un objet
+            $affectedComment = $commentManager ->modifComment($id, $author, $comment);
+            if ($affectedComment === false) {
+                throw new Exception('Impossible de modifier le commentaire !');
+                
+            }
+            else {
+                header('Location: index.php?action=post&id='. $_POST['sujetId']);
+            }
+
         }
 
         public function voir($id){

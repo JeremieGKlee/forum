@@ -21,15 +21,18 @@
                    
                     <?php
                     if(isset($_SESSION['id_userblog']))
+                    // if(App\Session::getUserBlog())
                     {
                     ?>
-                    <a href="index.php?ctrl=home&action=affichetopics&id="<?= $_SESSION['id_userblog']; ?>>Accueil</a>
+                    <a href="index.php?ctrl=home&action=affichetopics">Accueil</a>
                     <!-- <a href="index.php?ctrl=home&action=search">Recherche</a> -->
                     <!-- <a href="index.php">New Topic</a> -->
                     <a href="index.php?ctrl=secure&action=admin">Admin</a>
                     <!-- <a href="index.php">New Post</a> -->
-                    <a href="">Avatar</a>
-                    <a href="index.php?ctrl=secure&action=displayprofil&id="<?= $_SESSION['id_userblog']; ?>>Pseudo</a>
+                    <a href="index.php?ctrl=secure&action=displayprofil">
+                    <img src="./public/img/avatars/<?php echo $_SESSION['avatar']?>" width="30"/>
+                    <?= $_SESSION['pseudo']?>
+                    </a>
                     <a href="index.php?ctrl=secure&action=logout">Deconnexion</a>
                     <?php
                     }

@@ -3,15 +3,16 @@
 
     use App\Session;
     use Model\Managers\UserblogManager;
+    use App\AbstractController;
     
-    class SecureController
+    class SecureController extends AbstractController
     {
 
         public function signup()
         {
             //$db = new \PDO('mysql:host=localhost;dbname=forum;charset=utf8', 'root', '');
             //$db->setAttribute( \PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION );
-
+            // $pseudo = "";
             if(isset($_POST['envoi-reussi']))
             {
                 $pseudo = htmlspecialchars($_POST['pseudo']);
@@ -33,9 +34,13 @@
                     if($pseudolenght <= 20)
                     {
                         $manager= new UserblogManager();
-                        $tab = $manager->nicknameAlreadyUsed($pseudo);
-                        if(in_array(0, $tab))
+                        
+                        if($manager->nicknameAlreadyUsed($pseudo) == 0)
                         {
+                        // $tab = $manager->nicknameAlreadyUsed($pseudo);
+                        // if(in_array(0, $tab))
+                        // {
+
                         // $reqpseudo = $db->prepare("SELECT * FROM userblog WHERE pseudo = ? ");
                         // $reqpseudo->execute(array($pseudo));
                         // $pseudoexist = $reqpseudo->rowCount();
@@ -44,10 +49,12 @@
                             if($email == $email2)
                             {
                                 if(filter_var($email,FILTER_VALIDATE_EMAIL))
-                                {
-                                    $tab = $manager->mailAlreadyUsed($email);
-                                    if(in_array(0, $tab))
+                                {             
+                                    if($manager->mailAlreadyUsed($email) == 0)
                                     {
+                                    // $tab = $manager->mailAlreadyUsed($email);
+                                    // if(in_array(0, $tab))
+                                    // {
                                     // $reqmail = $db->prepare("SELECT * FROM userblog WHERE email = ? ");
                                     // $reqmail->execute(array($email));
                                     // $emailexist = $reqmail->rowCount();
@@ -57,9 +64,10 @@
                                         {
                                             $newuser = 
                                                 [
-                                                "pseudo" => $pseudo,
-                                                "email" => $email,
-                                                "mdp" => $mdp,
+                                                "pseudo"    => $pseudo,
+                                                "role" => json_encode(['ROLE_USER']),
+                                                "email"     => $email,
+                                                "mdp"       => $mdp,                                                
                                                 ];
                                             $manager->add($newuser);
                                             // var_dump($newuser);die;
@@ -71,7 +79,8 @@
                                             // var_dump($insertNewUser);die;
                                             Session ::addFlash("success", "Acceptation de votre demande");
                                             // $_SESSION['comptecree'] = "Acceptation de votre demande";
-                                            header('location:index.php?ctrl=secure&action=signin');
+                                            // header('location:index.php?ctrl=secure&action=signin');
+                                            $this->redirectTo("secure", "signin");
                                         }
                                         else
                                         {
@@ -126,29 +135,36 @@
                 if(!empty($_POST['pseudo']) AND !empty($_POST['mdp']))
                 {
                     $manager= new UserblogManager();
-                    $tab = $manager->nicknameAlreadyUsed($pseudo);
-                        if(in_array(0, $tab))
+                    
+                    if($manager->nicknameAlreadyUsed($pseudo) == 0)
                         {
+                    // $tab = $manager->nicknameAlreadyUsed($pseudo);
+                    // if(in_array(0, $tab))
+                    // {
                             Session ::addFlash("error", "Pseudo non reconnu");
                         }
                         else
                         {
                         $manager= new UserblogManager();
                         $user = $manager->findByPseudo($pseudo);
-                        $mdp = array_values($manager->retrievePassword($pseudo));
+                        // $mdp = array_values($manager->retrievePassword($pseudo));
+                        $mdp = $manager->retrievePassword($pseudo);
                     
-            
-                            if(password_verify($_POST['mdp'],$mdp[0]))
-            
+                            if(password_verify($_POST['mdp'],$mdp))
                             {
                             $manager= new UserblogManager();
-                            $userinfo = $manager->sessionopen($pseudo);
-                        
-                            $_SESSION['id_userblog'] = $userinfo['id_userblog'];
-                            $_SESSION['pseudo'] = $userinfo['pseudo'];
-                            $_SESSION['email'] = $userinfo['email'];
-                            header('location:index.php?ctrl=home&action=affichetopics&id='.$_SESSION['id_userblog']);
-
+                            $userblog = $manager->sessionopen($pseudo);
+                            // Session::setUserBlog($userblog);
+                            Session::addFlash("success", "Vous êtes connectés, bienvenue !");
+                            // var_dump($userblog);die;
+                            $_SESSION['id_userblog'] = $userblog['id_userblog'];
+                            $_SESSION['pseudo'] = $userblog['pseudo'];
+                            $_SESSION['email'] = $userblog['email'];
+                            $_SESSION['avatar'] = $userblog['avatar'];
+                            // var_dump($userinfo);
+                            // var_dump($_SESSION);die;
+                            // header('location:index.php?ctrl=home&action=affichetopics&id='.$_SESSION['id_userblog']);
+                            $this->redirectTo("home", "affichetopics");
                             }
                             else
                             {
@@ -173,7 +189,7 @@
             $manager = new UserblogManager();
     
             $profil = $manager->findOneById($id);
-            // var_dump($profil);
+            // var_dump($profil);die;
             return
                 [
                     "view" => VIEW_DIR."profilView.php",
@@ -203,7 +219,9 @@
                     $newpseudo = htmlspecialchars($_POST['newpseudo']);
                     $insertpseudo = $db->prepare("UPDATE userblog SET pseudo = ? WHERE id_userblog = ? " );
                     $insertpseudo->execute(array($newpseudo, $_SESSION['id_userblog']));
-                    header('location:index.php?ctrl=secure&action=displayprofil&id=');
+                    // header('location:index.php?ctrl=secure&action=displayprofil&id=');
+                    $this->redirectTo("secure", "displayprofil");
+
                     
                 }
 
@@ -212,7 +230,8 @@
                     $newmail = htmlspecialchars($_POST['newmail']);
                     $insertmail = $db->prepare("UPDATE userblog SET email = ? WHERE id_userblog = ? " );
                     $insertmail->execute(array($newmail, $_SESSION['id_userblog']));
-                    header('location:index.php?ctrl=secure&action=displayprofil&id=');
+                    // header('location:index.php?ctrl=secure&action=displayprofil&id=');
+                    $this->redirectTo("secure", "displayprofil");
                 }
 
                 if (isset($_POST['newmdp1']) AND !empty($_POST['newmdp1']) AND isset($_POST['newmdp2']) AND !empty($_POST['newmdp2']))
@@ -225,13 +244,51 @@
                     {
                         $insertmdp = $db->prepare("UPDATE userblog SET mdp = ? WHERE id_userblog = ? " );
                         $insertmdp->execute(array($newmdp1, $_SESSION['id_userblog']));
-                        header('location:index.php?ctrl=secure&action=displayprofil&id=');
+                        // header('location:index.php?ctrl=secure&action=displayprofil&id=');
+                        $this->redirectTo("secure", "displayprofil");
                     }
                     else
                     {
                         Session ::addFlash("error", "Vos 2 mots de passe ne sont pas identiques");
                     }
         
+                }
+
+                if( isset($_FILES['avatar']) and !empty($_FILES['avatar']['name']))
+                {
+                    $sizeMax = "2097152‬";
+                    $extensions_autorisees = array('jpg', 'jpeg', 'gif', 'png');
+                    if ($_FILES['avatar']['size'] <= $sizeMax)
+                    {
+                        $extension_upload = strtolower(substr(strrchr($_FILES['avatar']['name'],'.'),1));
+                        if (in_array($extension_upload, $extensions_autorisees))
+                        {
+                            $chemin = "./public/img/avatars/".$_SESSION['id_userblog'].".".$extension_upload;
+                            $resultat = move_uploaded_file($_FILES['avatar']['tmp_name'], $chemin);
+                            if($resultat)
+                            {
+                                $insertAvatar = $db->prepare("UPDATE userblog SET avatar = :avatar WHERE id_userblog = :id_userblog" );
+                                $insertAvatar->execute(array(
+                                    'avatar' => $_SESSION['id_userblog'].".".$extension_upload,
+                                    'id_userblog' => $_SESSION['id_userblog']
+                                ));
+                                $this->redirectTo("secure", "displayprofil");
+                            }
+                            else
+                            {
+                                Session ::addFlash("error", "Désolé l'image de votre Avatar n'a pu être téléchargé");
+                            }
+                        }
+                        else
+                        {
+                            Session ::addFlash("error", "Votre image doit être au format .jpg ou .jpeg ou .gif ou .png");
+                            
+                        }
+                    }
+                    else
+                    {
+                        Session ::addFlash("error", "Votre image ne doit pas dépasser 2 Mo");
+                    }
                 }
                 // var_dump($_SESSION);die;
                 return

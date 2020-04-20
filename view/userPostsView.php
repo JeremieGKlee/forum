@@ -10,12 +10,14 @@ $postblogs = $result["data"]["postblog"];
 
 <div class="news">
     <h3>
-        <?= htmlspecialchars($topic->getTitle()) ?> crée par <?= $topic->getUserBlog()->getPseudo()?>
+        <?= filter_var($topic->getTitle(),FILTER_SANITIZE_STRING) ?>
+        </br>
+        Crée par <img src="./public/img/avatars/<?php echo $topic->getUserBlog()->getAvatar()?>" width="20"/><?= $topic->getUserBlog()->getPseudo()?>
         <em> le <?= $topic->getTopicDate() ?></em>
     </h3>
     
     <p>
-        <?= nl2br(htmlspecialchars($topic->getContent())) ?>
+        <?= nl2br(filter_var($topic->getContent()),FILTER_SANITIZE_STRING) ?>
     </p>
 </div>
 
@@ -39,11 +41,21 @@ if(!empty($postblogs))
     foreach($postblogs as $postblog)
 {
 ?>
-<p><strong><?= htmlspecialchars($postblog->getUserBlog()->getPseudo()) ?>
-</strong> créé le <?= $postblog->getPostDate() ?><a href="index.php?ctrl=home&action=displayOneComment&id=<?= $postblog->getId()?>"> (modifier) </a> </p>
-<P>(dernière modification le <?= $postblog->getDateModif() ?>)</P> 
-<p><?= nl2br(htmlspecialchars($postblog->getPost())) ?></p>
+<p><?= nl2br(filter_var($postblog->getPost()),FILTER_SANITIZE_STRING) ?></p>
+Créé par <img src="./public/img/avatars/<?php echo $postblog->getUserBlog()->getAvatar()?>" width="20"/><strong><?= htmlspecialchars($postblog->getUserBlog()->getPseudo()) ?>
+</strong> le <?= $postblog->getPostDate() ?> </p>
 <?php
+if($_SESSION['id_userblog'] == $postblog->getUserBlog()->getId())
+{
+?>
+<a href="index.php?ctrl=home&action=displayOneComment&id=<?= $postblog->getId()?>"> (modifier) </a>
+<?php
+}
+?>
+<P>(dernière modification le <?= $postblog->getDateModif() ?>)</P>
+</br>
+<?php
+
 }
     }
 ?>

@@ -26,18 +26,25 @@
         /**
         *   met un user dans la session (pour le maintenir connecté)
         */
-        public static function setUser($user){
-            $_SESSION["user"] = $user;
+        public static function setUserBlog($userblog){
+            $_SESSION["userblog"] = $userblog;
         }
 
-        public static function getUser(){
-            return (isset($_SESSION['user'])) ?$_SESSION['user'] : false;
+        public static function getUserBlog(){
+            return (isset($_SESSION['userblog'])) ?$_SESSION['userblog'] : false;
         }
 
         public static function authenticationRequired(){
-            if(!self::getUser()){
-                header("Location:index.php?ctrl=security&action=login");
-                die();
+            if(self::getUserBlog()){
+                return true;
             }
+            return false;
+        }
+
+        public static function isAdmin(){
+            if(self::getUserBlog() && self::getUserBlog()->hasRole("ROLE_ADMIN")){
+                return true;
+            }
+            return false;
         }
     }

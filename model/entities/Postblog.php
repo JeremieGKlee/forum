@@ -55,9 +55,11 @@
         /**
          * Get the value of postDate
          */ 
-        public function getPostDate()
+        public function getPostDate($format = null)
         {
-                return $this->postDate;
+                $format = ($format) ? $format : "d/m/Y à H:i:s";
+                $formattedDate = $this->postDate->format($format);
+                return $formattedDate;
         }
 
         /**
@@ -67,7 +69,7 @@
          */ 
         public function setPostDate($postDate)
         {
-                $this->postDate = $postDate;
+                $this->postDate =  new \DateTime($postDate);
 
                 return $this;
         }
@@ -113,21 +115,23 @@
         }
 
          /**
-         * Get the value of postDate
+         * Get the value of dateModif
          */ 
-        public function getDateModif()
+        public function getDateModif($format = null)
         {
-                return $this->datemodif;
+                $format = ($format) ? $format : "d/m/Y à H:i:s";
+                $formattedDate = $this->datemodif->format($format);
+                return $formattedDate;
         }
 
         /**
-         * Set the value of postDate
+         * Set the value of DateModif
          *
          * @return  self
          */ 
         public function setDateModif($datemodif)
         {
-                $this->datemodif = $datemodif;
+                $this->datemodif = new \DateTime($datemodif);
 
                 return $this;
         }

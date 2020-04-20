@@ -50,6 +50,12 @@
             }
         }
 
+        public static function delete($sql)
+        {
+            
+            
+        }
+
         public static function update($sql){
             try{
                 $stmt = self::$bdd->prepare($sql);
@@ -72,18 +78,33 @@
          * 
          * @return array|null les enregistrements en FETCH_ASSOC ou null si aucun résultat
          */
+        // public static function select($sql, $params = null, bool $multiple = true):?array
+        // {
+        //     try{
+        //         $stmt = self::$bdd->prepare($sql);
+        //         $stmt->execute($params);
+        //         if($multiple){
+        //             $results = $stmt->fetchAll();
+        //             if(count($results) == 1){
+        //                 $results = $results[0];
+        //             }
+        //         }
+        //         else $results = $stmt->fetch();
+        //         $stmt->closeCursor();
+        //         return ($results == false) ? null : $results;
+        //     }
+        //     catch(\Exception $e){
+        //         echo $e->getMessage();
+        //     }
+        // }
         public static function select($sql, $params = null, bool $multiple = true):?array
         {
             try{
                 $stmt = self::$bdd->prepare($sql);
                 $stmt->execute($params);
-                if($multiple){
-                    $results = $stmt->fetchAll();
-                    if(count($results) == 1){
-                        $results = $results[0];
-                    }
-                }
-                else $results = $stmt->fetch();
+
+                $results = ($multiple) ? $stmt->fetchAll() : $stmt->fetch();
+                
                 $stmt->closeCursor();
                 return ($results == false) ? null : $results;
             }
@@ -91,5 +112,6 @@
                 echo $e->getMessage();
             }
         }
+
 
     }

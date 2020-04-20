@@ -16,14 +16,13 @@ $topics = $result["data"]["topic"];
 
     <div class="news">
         <h3>
-            <?= htmlspecialchars($topic->getTitle()) ?>
+            <?= filter_var($topic->getTitle(),FILTER_SANITIZE_STRING) ?>
             </br>
-             Crée par <?= $topic->getUserBlog()->getPseudo() ?>
+             Créé par <img src="./public/img/avatars/<?php echo $topic->getUserBlog()->getAvatar()?>" width="20"/><?= $topic->getUserBlog()->getPseudo() ?>
             <em>le <?= $topic->getTopicDate() ?></em>
         </h3>
-        
         <p>
-            <?= nl2br(htmlspecialchars($topic->getContent())) ?>
+            <?= nl2br(filter_var($topic->getContent()),FILTER_SANITIZE_STRING) ?>
             <br />
             <em><a href="index.php?ctrl=home&amp;action=affichePostsTopic&amp;id=<?= $topic->getId() ?>">Posts</a></em>
         </p>
@@ -31,7 +30,6 @@ $topics = $result["data"]["topic"];
 <?php
         }
     }
-    else echo "<p>Pas de véhicules disponibles...</p>";
 ?>
 <form action="index.php?ctrl=home&action=ajouteTopic&id=" method="post">
 <!-- <a href="index.php?ctrl=home&action=affichetopics&id="<?= $_SESSION['id_userblog']; ?>>Accueil</a> -->

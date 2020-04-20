@@ -7,9 +7,10 @@
 
         private $id;
         private $pseudo;
-        private $adminBlog;
+        private $role;
         private $email;
         private $userBlogDate;
+        private $avatar;
 
 
 
@@ -33,7 +34,7 @@
         }
 
         /**
-         * Get the value of nom
+         * Get the value of pseudo
          */ 
         public function getPseudo()
         {
@@ -41,7 +42,7 @@
         }
 
         /**
-         * Set the value of nom
+         * Set the value of pseudo
          *
          * @return  self
          */ 
@@ -53,27 +54,35 @@
         }
         
         /**
-         * Get the value of origine
+         * Get the value of role
          */ 
-        public function getAdminBlog()
+        public function getRole()
         {
-                return $this->adminBlog;
+                return $this->role;
         }
 
         /**
-         * Set the value of origine
+         * Set the value of role
          *
          * @return  self
          */ 
-        public function setAdminBlog($adminBlog)
+        public function setRoles($roles)
         {
-                $this->adminBlog = $adminBlog;
+            if($roles == null){
+                $this->roles[] = "ROLE_USER";
+            }
+            else $this->roles = json_decode($roles);
 
-                return $this;
+            return $this;
+        }
+
+        public function hasRole($role)
+        {
+            return in_array($role, $this->roles);
         }
 
         /**
-         * Get the value of origine
+         * Get the value of email
          */ 
         public function getEmail()
         {
@@ -81,7 +90,7 @@
         }
 
         /**
-         * Set the value of origine
+         * Set the value of email
          *
          * @return  self
          */ 
@@ -93,21 +102,42 @@
         }
 
         /**
-         * Get the value of origine
+         * Get the value of userblogdate
          */ 
-        public function getUserBlogDate()
+        public function getUserBlogDate($format = null)
         {
-                return $this->userBlogDate;
+                $format = ($format) ? $format : "d/m/Y à H:i:s";
+                $formattedDate = $this->userBlogDate->format($format);
+                return $formattedDate;
         }
 
         /**
-         * Set the value of origine
-         *
+         * Set the value of userblogdate
          * @return  self
          */ 
         public function setUserBlogDate($userBlogDate)
         {
-                $this->userBlogDate = $userBlogDate;
+                $this->userBlogDate = new \DateTime($userBlogDate);
+
+                return $this;
+        }
+
+        /**
+         * Get the value of avatar
+         */
+        public function getAvatar()
+        {
+                return $this->avatar;
+        }
+
+        /**
+         * Set the value of avatar
+         *
+         * @return  self
+         */ 
+        public function setAvatar($avatar)
+        {
+                $this->avatar = $avatar;
 
                 return $this;
         }

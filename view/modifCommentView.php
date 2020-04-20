@@ -36,3 +36,11 @@ $post = $result["data"];
         <input type="submit"/>
     </div>
 </form>
+<?php
+// if(isset($_SESSION['id_userblog']) AND ($_GET['id'] == ""))
+if($_SESSION['id_userblog'] != ($post->getUserblog()->getId()))
+// if(isset($_SESSION['id_userblog']))
+    {
+        header('location:index.php?ctrl=secure&action=hacker');
+    }
+    ?>

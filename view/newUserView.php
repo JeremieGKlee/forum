@@ -1,4 +1,8 @@
-
+<?php
+$pseudo = isset( $_POST['pseudo'] ) ?  $_POST['pseudo'] : NULL;
+$email = isset( $_POST['email'] ) ?  $_POST['email'] : NULL;
+$email2 = isset( $_POST['email2'] ) ?  $_POST['email2'] : NULL;
+?>
 
 <h1>Un petit effort pour arriver sur mon petit Forum Muselé</h1>
 

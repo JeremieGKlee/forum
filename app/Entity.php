@@ -19,7 +19,7 @@
                     $man = new $FQCName();
                     $value = $man->findOneById($value);
                 }
-                
+                //fabrication du nom du setter à appeler (ex: setMarque)
                 $method = "set".ucfirst($fieldArray[0]);
                 if(method_exists($this, $method)){
                     $this->$method($value);

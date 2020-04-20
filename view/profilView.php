@@ -7,18 +7,28 @@ $profil = $result["data"];
 
 <h2>Profil de <?= $profil->getPseudo() ?></h2>
 <div>
+    <?php
+    if(!empty($profil->getAvatar()))
+    {
+        // var_dump($profil->getAvatar());die;
+        ?>
+        <img src="./public/img/avatars/<?php echo $profil->getAvatar()?>" width="150"/>
+        <?php
+    }
+    ?>
     <p>
     Pseudo : <?= $profil->getPseudo() ?>
     </p>
     Mail : <?= $profil->getEmail() ?>
     <p>
-</br>
+</div>
 <?php
-if(isset($_SESSION['id_userblog']) AND ($_GET['id'] == ""))
+// if(isset($_SESSION['id_userblog']) AND ($_GET['id'] == ""))
 // if(isset($_SESSION['id_userblog']))
+if(empty($_GET['id']))
     {
     ?>
-    <a href="index.php?ctrl=secure&action=modifyprofil&id="<?= $_SESSION['id_userblog']; ?>>Modifiez mon profil</a>
+    <a href="index.php?ctrl=secure&action=modifyprofil">Modifiez mon profil</a>
     <?php
     }
     else

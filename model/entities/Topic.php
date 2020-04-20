@@ -74,9 +74,11 @@
         /**
          * Get the value of topicdate
          */ 
-        public function getTopicDate()
+        public function getTopicDate($format = null)
         {
-                return $this->topicDate;
+                $format = ($format) ? $format : "d/m/Y à H:i:s";
+                $formattedDate = $this->topicDate->format($format);
+                return $formattedDate;
         }
 
         /**
@@ -86,7 +88,7 @@
          */ 
         public function setTopicDate($topicDate)
         {
-                $this->topicDate = $topicDate;
+                $this->topicDate = new \DateTime($topicDate);
 
                 return $this;
         }
