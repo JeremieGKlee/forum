@@ -56,12 +56,12 @@
             
         }
 
-        public static function update($sql){
+        public static function update($sql, $params)
+        {
             try{
                 $stmt = self::$bdd->prepare($sql);
-                $result = $stmt->execute();
-                
-                return ($result == false) ? null : $result;
+
+                return $stmt->execute($params);
                 
             }
             catch(\Exception $e){

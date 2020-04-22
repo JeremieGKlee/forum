@@ -71,5 +71,69 @@
             return DAO::select($sql, ['pseudo' => $pseudo],false);
         }
 
+        public function changePseudo($newpseudo,$id)
+        {
+            $sql = "UPDATE ".$this->tableName."
+                    SET pseudo = :pseudo
+                    WHERE id_userblog = :id_userblog
+                    ";
+            return DAO::update($sql,
+            [
+                'pseudo' => $newpseudo,
+                'id_userblog' => $id
+            ]
+            );
+        }
+
+        public function changeMail($newmail,$id)
+        {
+            $sql = "UPDATE ".$this->tableName."
+                    SET email = :email
+                    WHERE id_userblog = :id_userblog
+                    ";
+            return DAO::update($sql,
+            [
+                'email' => $newmail,
+                'id_userblog' => $id
+            ]
+            );
+        }
+
+        public function changeMdp($newmdp1,$id)
+        {
+            $sql = "UPDATE ".$this->tableName."
+                    SET mdp = :mdp
+                    WHERE id_userblog = :id_userblog
+                    ";
+            return DAO::update($sql,
+            [
+                'mdp' => $newmdp1,
+                'id_userblog' => $id
+            ]
+            );
+        }
+
+        public function changeAvatar($avatar,$id)
+        {
+            $sql = "UPDATE ".$this->tableName."
+                    SET avatar = :avatar
+                    WHERE id_userblog = :id_userblog
+                    ";
+            return DAO::update($sql,
+            [
+                'avatar' => $avatar,
+                'id_userblog' => $id
+            ]
+            );
+        }
+
+        public function userProfil($id)
+        {
+            $sql = "SELECT * 
+                    FROM ".$this->tableName."
+                    WHERE id_userblog = :id_userblog
+                    ";
+            return DAO::select($sql, ['id_userblog' => $id],false);
+        }
 
     }

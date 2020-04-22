@@ -40,29 +40,38 @@
         {
         $tman = new TopicManager();
         $userblog = $_SESSION['id_userblog'];
-        $title = filter_input(INPUT_POST,'title',FILTER_SANITIZE_STRING);
-        // $content =  htmlspecialchars($_POST['content']);
-        // $content = filter_var($_POST['content'],FILTER_SANITIZE_STRING);
-        $content = filter_input(INPUT_POST,'content',FILTER_SANITIZE_STRING);
-
-        $newtopic =
-            [
-                "title" => $title,
-                "content" => $content,
-                "userblog_id" => $userblog,
-            ]
-            ;
-            $tman->add($newtopic);
-    
-            if ($tman === false)
+            if(!empty($_POST['title']) AND !empty($_POST['content']))
             {
-                Session::addFlash("error", "Impossible d'ajouter le topic !");
+                $title = filter_input(INPUT_POST,'title',FILTER_SANITIZE_STRING);
+                // $content =  htmlspecialchars($_POST['content']);
+                // $content = filter_var($_POST['content'],FILTER_SANITIZE_STRING);
+                $content = filter_input(INPUT_POST,'content',FILTER_SANITIZE_STRING);
+
+                $newtopic =
+                    [
+                        "title" => $title,
+                        "content" => $content,
+                        "userblog_id" => $userblog,
+                    ]
+                    ;
+                    $tman->add($newtopic);
+            
+                    if ($tman === false)
+                    {
+                        Session::addFlash("error", "Impossible d'ajouter le topic !");
+                    }
+                    else
+                    {
+                        // header('location:index.php?ctrl=home&action=affichetopics&id=');
+                        $this->redirectTo("home", "affichetopics");
+                    }
             }
             else
             {
-                // header('location:index.php?ctrl=home&action=affichetopics&id=');
+                Session ::addFlash("error", "Tous les champs doivent être remplis!");
                 $this->redirectTo("home", "affichetopics");
             }
+
             return ["view" => VIEW_DIR."userListTopicsView.php"];
         }
 
@@ -88,31 +97,41 @@
             ];
         }
 
-        public function ajoutePost()
+        public function ajoutePost($idtopic)
         {
+        $topicManager = new TopicManager();
         $pbman = new PostblogManager();
         $userblog = $_SESSION['id_userblog'];
-        $topic = $_GET['id'];
-        $comment = filter_input(INPUT_POST,'comment',FILTER_SANITIZE_STRING);
-        $newPost =
-            [
-                "post" => $comment,
-                "userblog_id" => $userblog,
-                "topic_id" => $topic,
-            ]
-            ;
-            // var_dump($newPost);die;
-            $pbman->add($newPost);
-    
-            if ($pbman === false)
+        $idtopic = $_GET['id'];
+            if(!empty($_POST['comment']) && $topicManager ->isClosed($idtopic))
             {
-                Session::addFlash("error", "Impossible d'ajouter le post !");
+                $comment = filter_input(INPUT_POST,'comment',FILTER_SANITIZE_STRING);
+                $newPost =
+                    [
+                        "post" => $comment,
+                        "userblog_id" => $userblog,
+                        "topic_id" => $idtopic,
+                    ]
+                    ;
+                    // var_dump($newPost);die;
+                    $pbman->add($newPost);
+            
+                    if ($pbman === false)
+                    {
+                        Session::addFlash("error", "Impossible d'ajouter le post !");
+                    }
+                    else
+                    {
+                        // header('location:index.php?ctrl=home&action=affichePostsTopic&id='.$_GET['id']);
+                        $this->redirectTo("home", "affichePostsTopic",$_GET['id']);
+                    }
             }
             else
             {
-                // header('location:index.php?ctrl=home&action=affichePostsTopic&id='.$_GET['id']);
+                Session ::addFlash("error", "Le champs commentaire est vide!");
                 $this->redirectTo("home", "affichePostsTopic",$_GET['id']);
             }
+
             return ["view" => VIEW_DIR."userPostsView.php"];
         }
 
@@ -130,94 +149,81 @@
     
         }
 
-        function changeComment($id, $author, $comment) // pour modifier un commentaire
+        function changePost() // pour modifier un commentaire
         {
-            $commentManager =new \OpenClassrooms\Blog\Model\CommentManager(); //Création d'un objet
-            $affectedComment = $commentManager ->modifComment($id, $author, $comment);
-            if ($affectedComment === false) {
-                throw new Exception('Impossible de modifier le commentaire !');
-                
-            }
-            else {
-                header('Location: index.php?action=post&id='. $_POST['sujetId']);
-            }
-
-        }
-
-        public function voir($id){
-            
-            $man = new VehiculeManager();
-
-            $vehicule = $man->findOneById($id);
-
-            return [
-                "view" => VIEW_DIR."voir.php",
-                "data" => $vehicule
-            ];
-        }
-
-        public function new(){
-
-            if(!empty($_POST)){
-
-                $data["immat"]     = $_POST['immat'];
-                $data["modele"]    = $_POST['modele'];
-                $data["marque_id"] = $_POST['marque'];
-                $data["nb_portes"] = $_POST['nbportes'];
-
-                if( $data["immat"] !== "" && $data['modele'] !== ""){
-                    
-                    $man = new VehiculeManager();
-
-                    //si l'ajout s'effectue correctement (càd que le DAO a renvoyé l'id de ce qu'on a inséré en base
-                    if($idNewVoiture = $man->add($data)){
-                        //on met un message de succès en session
-                        Session::addFlash("success", "VOITURE AJOUTEE AVEC SUCCES !");
-                        //et on redirige (via une redirect 302 serveur) vers une toute nouvelle requète
-                        //pour ne plus avoir de refresh de POST
-                        header("Location:index.php?ctrl=home&action=voir&id=".$idNewVoiture);
-                        //TRES IMPORTANT, il faut arrêter l'exécution de la suite du script !
-                        //même si on a fait une redirection, le script s'exécute jusqu'au bout...
-                        die();
-                    }
-                    else{
-                        //on met un message d'erreur en session (cas où l'ajout ne s'est pas effectué en base)
-                        Session::addFlash("error", "UN PROBLEME EST SURVENU... !!!!");
-                    }
-                }
-                else{
-                    //on met un message d'erreur en session (cas où le formulaire n'est pas bien rempli)
-                    Session::addFlash("error", "LES CHAMPS OBLIGATOIRES SONT VIDES !!!!");
+            $id = $_GET['id'];
+            $id2 = $_GET['id2'];
+            $pbman = new PostblogManager(); //Création d'un objet
+            if(!empty($_POST['post']))
+            {
+                $post = filter_input(INPUT_POST,'post',FILTER_SANITIZE_STRING);
+                $insertpost =$pbman ->modifPost($post, $id);
+                // var_dump($insertpost);die;
+                if ($insertpost === false)
+                {
+                Session::addFlash("error", "Impossible de modifier le commentaire !");    
                 }
             }
-            //s'il n'y a pas eu de redirection, on va jusqu'à l'affichage du formulaire quoi qu'il arrive
-            $mman = new MarqueManager();
-            $marques = $mman->findAll();
+            else
+            {
+                Session::addFlash("error", "le Champ de modification est vide, vous n'avez rien modifié!");
+                $this->redirectTo("home", "affichePostsTopic",$id2);
+            }
+                // header('Location: index.php?action=post&id='. $_POST['sujetId']);
+                Session::addFlash("success", "Votre post a bien été modifié!");
+                $this->redirectTo("home", "affichePostsTopic",$id2);
 
-            return [
-                "view" => VIEW_DIR."form.php",
-                "data" => $marques
-            ]; 
-            
-            
         }
 
-        public function listeParMarque($idmarque){
-            
-            $vman = new VehiculeManager();
-            $mman = new MarqueManager();
+        // public function closeTopic($topic)
+        // {
+        //     $topicManager = new TopicManager();
+        //     $closeNumber = ($topicManager ->isClosed($topic)) ? "0" : "1";
+        //     if($topicManager -> close($topic, $closeNumber))
+        //     {
+        //         if($closeNumber == "1")
+        //         {
+        //             Session::addFlash("success", "Sujet verrouillé");
+        //         }
+        //         if($closeNumber == "0")
+        //         {
+        //             Session::addFlash("success", "Sujet déverrouillé");
+        //         }
+        //     }
+        //     else
+        //     {
+        //         Session::addFlash("error", "Sujet impossible à verrouiller");
+        //     }
+        //     $this->redirectTo("home", "affichePostsTopic",$topic);
+        // }
 
-           
-            $marque = $mman->findOneById($idmarque);
-            $vehicules = $vman->findByMarque($idmarque);
+        public function closeTopic($idtopic)
+        {
+            $topicManager = new TopicManager();
+            $topic = $topicManager-> findOneById($idtopic);
+            // if(App\Session::isAdmin() || $_SESSION['id_userblog'] == $topic->getUserBlog()->getId())
+            // {
+            if($_SESSION['id_userblog'] == $topic->getUserBlog()->getId())
+            {
 
-            return [
-                "view" => VIEW_DIR."liste-marque.php",
-                "data" => [
-                    "marque" => $marque,
-                    "vehicules" => $vehicules
-                ]
-            ];
+                $closeNumber = ($topic ->getClosed($idtopic)) ? "0" : "1";
+                if($topicManager -> close($idtopic, $closeNumber))
+                {
+                    if($closeNumber == "1")
+                    {
+                        Session::addFlash("success", "Sujet verrouillé");
+                    }
+                    if($closeNumber == "0")
+                    {
+                        Session::addFlash("success", "Sujet déverrouillé");
+                    }
+                }
+            }
+            else
+            {
+                Session::addFlash("error", "Aucune action possible");
+            }
+            $this->redirectTo("home", "affichePostsTopic",$idtopic);
         }
 
     }

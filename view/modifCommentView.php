@@ -11,11 +11,12 @@ $post = $result["data"];
  
 <p><strong>Créé par <?= htmlspecialchars($post->getUserblog()->getPseudo()) ?>
 </strong> le <?= $post->getpostDate() ?></p>
-    <p><?= nl2br(htmlspecialchars($post->getPost()))?></p>
+    <p><?= nl2br(filter_var($post->getPost()),FILTER_SANITIZE_STRING)?></p>
 
 <h2>Modification du commentaire</h2>
 <!-- modif 2 apportée mercredi soir 22 05 19 : post_id au lieu d'id pour le lien ci-dessous : -->
-<form action="index.php?action=changeComment&amp;id=<?= $_GET['id'];?>" method="post">
+<!-- <form action="index.php?action=changePost&id=< $_GET['id']?>" method="post"> -->
+<form action="index.php?action=changePost&id=<?= $_GET['id']?>&id2=<?= $_GET['id2']?>" method="post">
  
     <!--<div> -->
         <!-- modif 1 apportée mercredi soir 22 05 19 : ajout de la demande de l'id du post dans le formulaire : champs à mettre en hidden peut être plus tard  -->

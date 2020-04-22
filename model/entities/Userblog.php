@@ -38,7 +38,7 @@
          */ 
         public function getPseudo()
         {
-                return $this->pseudo;
+                return ucfirst($this->pseudo);
         }
 
         /**
@@ -142,9 +142,9 @@
                 return $this;
         }
 
-        // public function __toString(){
+        public function __toString(){
 
-        //     return $this->nom;
-        // }
+            return $this->getPseudo();
+        }
 
     }

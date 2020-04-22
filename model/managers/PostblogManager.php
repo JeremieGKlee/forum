@@ -33,7 +33,28 @@
             );
         }
     
-    
+        // public function modifPost($id, $post) // pour modifier un commentaire
+        // {
+        //     $db = $this-> dbConnect();
+        //     $posts = $db->prepare('UPDATE postblog SET post = :post WHERE id_postblog = :id_postblog');
+        //     $affectedComment = $posts->execute(array('post' => $post, 'id_postblog' => $id));
+            
+        //     return $affectedComment;
+        // }
+
+        public function modifPost($post, $id) // pour modifier un commentaire
+        {
+            $sql = "UPDATE ".$this->tableName."
+            SET post = :post
+            WHERE id_postblog = :id_postblog
+            ";
+            return DAO::update($sql,
+            [
+                'post' => $post,
+                'id_postblog' => $id
+            ]
+            );
+        }
     
     
     }

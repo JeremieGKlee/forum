@@ -27,11 +27,11 @@
         *   met un user dans la session (pour le maintenir connecté)
         */
         public static function setUserBlog($userblog){
-            $_SESSION["userblog"] = $userblog;
+            $_SESSION["id_userblog"] = $userblog;
         }
 
         public static function getUserBlog(){
-            return (isset($_SESSION['userblog'])) ?$_SESSION['userblog'] : false;
+            return (isset($_SESSION['id_userblog'])) ?$_SESSION['id_userblog'] : false;
         }
 
         public static function authenticationRequired(){

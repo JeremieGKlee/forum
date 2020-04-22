@@ -94,7 +94,27 @@
         }
 
         /**
-         * Get the value of user
+         * Get the value of closed
+         */ 
+        public function getClosed()
+        {
+                return $this->closed;
+        }
+
+        /**
+         * Set the value of closed
+         *
+         * @return  self
+         */ 
+        public function setClosed($closed)
+        {
+                $this->closed = $closed;
+
+                return $this;
+        }
+
+        /**
+         * Get the value of userBlog
          */ 
         public function getUserBlog()
         {
@@ -102,7 +122,7 @@
         }
 
         /**
-         * Set the value of user
+         * Set the value of userBlog
          *
          * @return  self
          */ 

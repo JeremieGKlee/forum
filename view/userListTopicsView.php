@@ -16,7 +16,7 @@ $topics = $result["data"]["topic"];
 
     <div class="news">
         <h3>
-            <?= filter_var($topic->getTitle(),FILTER_SANITIZE_STRING) ?>
+            <?= filter_var($topic->getTitle(),FILTER_SANITIZE_STRING) ?> <?= $topic->getClosed() ? "(- Topic verrouillé)" : "" ;?>
             </br>
              Créé par <img src="./public/img/avatars/<?php echo $topic->getUserBlog()->getAvatar()?>" width="20"/><?= $topic->getUserBlog()->getPseudo() ?>
             <em>le <?= $topic->getTopicDate() ?></em>

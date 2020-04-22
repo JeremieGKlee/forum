@@ -217,8 +217,10 @@
                 if (isset($_POST['newpseudo']) AND !empty($_POST['newpseudo']) AND $_POST['newpseudo'] != $user['pseudo'])
                 {
                     $newpseudo = htmlspecialchars($_POST['newpseudo']);
-                    $insertpseudo = $db->prepare("UPDATE userblog SET pseudo = ? WHERE id_userblog = ? " );
-                    $insertpseudo->execute(array($newpseudo, $_SESSION['id_userblog']));
+                    $insertpseudo = $manager -> changePseudo($newpseudo,$id);
+
+                    // $insertpseudo = $db->prepare("UPDATE userblog SET pseudo = ? WHERE id_userblog = ? " );
+                    // $insertpseudo->execute(array($newpseudo, $_SESSION['id_userblog']));
                     // header('location:index.php?ctrl=secure&action=displayprofil&id=');
                     $this->redirectTo("secure", "displayprofil");
 
@@ -228,10 +230,26 @@
                 if (isset($_POST['newmail']) AND !empty($_POST['newmail']) AND $_POST['newmail'] != $user['email'])
                 {
                     $newmail = htmlspecialchars($_POST['newmail']);
-                    $insertmail = $db->prepare("UPDATE userblog SET email = ? WHERE id_userblog = ? " );
-                    $insertmail->execute(array($newmail, $_SESSION['id_userblog']));
-                    // header('location:index.php?ctrl=secure&action=displayprofil&id=');
-                    $this->redirectTo("secure", "displayprofil");
+                    $newmail2 = htmlspecialchars($_POST['newmail2']);
+                    if( $_POST['newmail'] == $_POST['newmail2'])
+                    {
+                        if(filter_var($newmail,FILTER_VALIDATE_EMAIL))
+                        {
+                            $insertmail = $manager -> changeMail($newmail,$id);
+                            // $insertmail = $db->prepare("UPDATE userblog SET email = ? WHERE id_userblog = ? " );
+                            // $insertmail->execute(array($newmail, $_SESSION['id_userblog']));
+                            // header('location:index.php?ctrl=secure&action=displayprofil&id=');
+                            $this->redirectTo("secure", "displayprofil");
+                        }
+                        else
+                        {
+                            Session ::addFlash("error", "Votre adresse mail n'est pas valide");
+                        }       
+                    }
+                    else
+                    {
+                        Session ::addFlash("error", "Vos 2 mails ne sont pas identiques");
+                    }
                 }
 
                 if (isset($_POST['newmdp1']) AND !empty($_POST['newmdp1']) AND isset($_POST['newmdp2']) AND !empty($_POST['newmdp2']))
@@ -242,8 +260,9 @@
 
                     if( $_POST['newmdp1'] == $_POST['newmdp2'])
                     {
-                        $insertmdp = $db->prepare("UPDATE userblog SET mdp = ? WHERE id_userblog = ? " );
-                        $insertmdp->execute(array($newmdp1, $_SESSION['id_userblog']));
+                        $insertmdp = $manager -> changeMdp($newmdp1,$id);
+                        // $insertmdp = $db->prepare("UPDATE userblog SET mdp = ? WHERE id_userblog = ? " );
+                        // $insertmdp->execute(array($newmdp1, $_SESSION['id_userblog']));
                         // header('location:index.php?ctrl=secure&action=displayprofil&id=');
                         $this->redirectTo("secure", "displayprofil");
                     }
@@ -267,11 +286,13 @@
                             $resultat = move_uploaded_file($_FILES['avatar']['tmp_name'], $chemin);
                             if($resultat)
                             {
-                                $insertAvatar = $db->prepare("UPDATE userblog SET avatar = :avatar WHERE id_userblog = :id_userblog" );
-                                $insertAvatar->execute(array(
-                                    'avatar' => $_SESSION['id_userblog'].".".$extension_upload,
-                                    'id_userblog' => $_SESSION['id_userblog']
-                                ));
+                                $avatar = $_SESSION['id_userblog'].".".$extension_upload;
+                                $insertAvatar = $manager-> changeAvatar($avatar,$id);
+                                // $insertAvatar = $db->prepare("UPDATE userblog SET avatar = :avatar WHERE id_userblog = :id_userblog" );
+                                // $insertAvatar->execute(array(
+                                //     'avatar' => $_SESSION['id_userblog'].".".$extension_upload,
+                                //     'id_userblog' => $_SESSION['id_userblog']
+                                // ));
                                 $this->redirectTo("secure", "displayprofil");
                             }
                             else
