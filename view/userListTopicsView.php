@@ -10,13 +10,22 @@ $topics = $result["data"]["topic"];
 
     if(!empty($topics))
     {
-        foreach($topics as $topic){
+        foreach($topics as $topic)
+        {
 
 ?> 
 
     <div class="news">
         <h3>
-            <?= filter_var($topic->getTitle(),FILTER_SANITIZE_STRING) ?> <?= $topic->getClosed() ? "(- Topic verrouillé)" : "" ;?>
+            <?= filter_var($topic->getTitle(),FILTER_SANITIZE_STRING) ?>
+            <?php if($_SESSION['id_userblog'] == $topic->getUserBlog()->getId())
+            {
+            ?>
+            <a href="index.php?ctrl=home&action=deleteTopic&id=<?= $topic->getId() ?>">Supprimer le topic</a>
+            <?php
+            }
+            ?>
+            <?= $topic->getClosed() ? "(- Topic verrouillé)" : "" ;?>
             </br>
              Créé par <img src="./public/img/avatars/<?php echo $topic->getUserBlog()->getAvatar()?>" width="20"/><?= $topic->getUserBlog()->getPseudo() ?>
             <em>le <?= $topic->getTopicDate() ?></em>
@@ -49,3 +58,14 @@ $topics = $result["data"]["topic"];
 <?php
 // $posts->closeCursor();
 ?>
+
+<script>
+    tinymce.init({
+      selector: 'textarea',
+      plugins: 'a11ychecker advcode casechange formatpainter linkchecker autolink lists checklist media mediaembed pageembed permanentpen powerpaste table advtable tinycomments tinymcespellchecker',
+      toolbar: 'a11ycheck addcomment showcomments casechange checklist code formatpainter pageembed permanentpen table',
+      toolbar_mode: 'floating',
+      tinycomments_mode: 'embedded',
+      tinycomments_author: 'Author name',
+    });
+</script>

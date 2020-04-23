@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdn.tiny.cloud/1/ur0lv0qp1mmnah9d0nytpdfiw8zz41k8xl4f5v0i4m1qtrcd/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
     <link rel="stylesheet" href="./public/css/style.css">
     <title>Mon petit Forum Muselé</title>
     <script
@@ -17,8 +18,7 @@
            
             <header>
                 <nav>
-                
-                   
+                  
                     <?php
                     if(isset($_SESSION['id_userblog']))
                     // if(App\Session::getUserBlog())

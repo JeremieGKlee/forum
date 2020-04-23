@@ -9,6 +9,7 @@
         private $title;
         private $content;
         private $topicDate;
+        private $closed;
         private $userblog;
 
 

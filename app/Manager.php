@@ -70,15 +70,13 @@
         }
 
         public function delete($id){
+            // var_dump($id);die;
             $sql = "DELETE
-                    FROM ".$this->tableName." u
-                    WHERE a.id_".$this->tableName." = :id
+                    FROM ".$this->tableName."
+                    WHERE id_".$this->tableName." = :id
                     ";
-
-            return $this->getOneOrNullResult(
-                DAO::delete($sql, ['id' => $id], false), 
-                $this->className
-            );
+            // var_dump($this->tableName);die;
+            return DAO::erase($sql, ['id' => $id]);
         }   
          
         public function change($data){

@@ -50,10 +50,18 @@
             }
         }
 
-        public static function delete($sql)
+        public static function erase($sql, $params)
         {
-            
-            
+            // var_dump($params);die;
+            try{
+                $stmt = self::$bdd->prepare($sql);
+
+                return $stmt->execute($params);
+                
+            }
+            catch(\Exception $e){
+                echo $e->getMessage();
+            }
         }
 
         public static function update($sql, $params)
@@ -113,5 +121,6 @@
             }
         }
 
+        
 
     }

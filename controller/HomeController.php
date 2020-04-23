@@ -43,8 +43,6 @@
             if(!empty($_POST['title']) AND !empty($_POST['content']))
             {
                 $title = filter_input(INPUT_POST,'title',FILTER_SANITIZE_STRING);
-                // $content =  htmlspecialchars($_POST['content']);
-                // $content = filter_var($_POST['content'],FILTER_SANITIZE_STRING);
                 $content = filter_input(INPUT_POST,'content',FILTER_SANITIZE_STRING);
 
                 $newtopic =
@@ -62,7 +60,6 @@
                     }
                     else
                     {
-                        // header('location:index.php?ctrl=home&action=affichetopics&id=');
                         $this->redirectTo("home", "affichetopics");
                     }
             }
@@ -113,7 +110,7 @@
                         "topic_id" => $idtopic,
                     ]
                     ;
-                    // var_dump($newPost);die;
+
                     $pbman->add($newPost);
             
                     if ($pbman === false)
@@ -122,7 +119,7 @@
                     }
                     else
                     {
-                        // header('location:index.php?ctrl=home&action=affichePostsTopic&id='.$_GET['id']);
+                       
                         $this->redirectTo("home", "affichePostsTopic",$_GET['id']);
                     }
             }
@@ -158,7 +155,6 @@
             {
                 $post = filter_input(INPUT_POST,'post',FILTER_SANITIZE_STRING);
                 $insertpost =$pbman ->modifPost($post, $id);
-                // var_dump($insertpost);die;
                 if ($insertpost === false)
                 {
                 Session::addFlash("error", "Impossible de modifier le commentaire !");    
@@ -169,40 +165,16 @@
                 Session::addFlash("error", "le Champ de modification est vide, vous n'avez rien modifié!");
                 $this->redirectTo("home", "affichePostsTopic",$id2);
             }
-                // header('Location: index.php?action=post&id='. $_POST['sujetId']);
                 Session::addFlash("success", "Votre post a bien été modifié!");
                 $this->redirectTo("home", "affichePostsTopic",$id2);
 
         }
 
-        // public function closeTopic($topic)
-        // {
-        //     $topicManager = new TopicManager();
-        //     $closeNumber = ($topicManager ->isClosed($topic)) ? "0" : "1";
-        //     if($topicManager -> close($topic, $closeNumber))
-        //     {
-        //         if($closeNumber == "1")
-        //         {
-        //             Session::addFlash("success", "Sujet verrouillé");
-        //         }
-        //         if($closeNumber == "0")
-        //         {
-        //             Session::addFlash("success", "Sujet déverrouillé");
-        //         }
-        //     }
-        //     else
-        //     {
-        //         Session::addFlash("error", "Sujet impossible à verrouiller");
-        //     }
-        //     $this->redirectTo("home", "affichePostsTopic",$topic);
-        // }
-
         public function closeTopic($idtopic)
         {
             $topicManager = new TopicManager();
             $topic = $topicManager-> findOneById($idtopic);
-            // if(App\Session::isAdmin() || $_SESSION['id_userblog'] == $topic->getUserBlog()->getId())
-            // {
+            
             if($_SESSION['id_userblog'] == $topic->getUserBlog()->getId())
             {
 
@@ -224,6 +196,19 @@
                 Session::addFlash("error", "Aucune action possible");
             }
             $this->redirectTo("home", "affichePostsTopic",$idtopic);
+        }
+
+        public function deleteTopic($idtopic)
+        {
+            // var_dump($idtopic);
+            $topicManager = new TopicManager();
+            if($topicManager -> delete($idtopic))
+            {
+                Session::addFlash("success", "Topic supprimé");
+            }
+        
+        $this->redirectTo("home", "afficheTopics");  
+        
         }
 
     }
